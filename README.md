@@ -136,6 +136,7 @@ docker-compose exec web pytest
 - Foram desenvolvidos testes unitários e de integração em cima da classe `SplitSerivce` para garantir a qualidade do código e a funcionalidade do módulo de splits.
 - Também foi desenvolvido métricas e log para a observabilidade que podem ser facilmente incorporadas ao service e posteriormente integradas com algum sistema de monitoramento como Grafana.
 - Todas as validações de um split estão dentro do service, concentradas em um só lugar, o que facilita a manutenção e a adição de novas validações caso necessário.
+- A única coisa nessa modelagem que não é auditável é a alteração do status do split, pois não mantemos um histórico das mudanças de status. Para resolver isso, caso haja necessidade dessa auditoria poderia haver uma entidade `SplitStatusHistory` que armazenaria o histórico de alterações de status, ou uma tabela generica de auditoria que armazenaria todas as requisições e alterações do sistema com índices para consultas mais eficientes.
 
 ### Banco de Dados
 
@@ -227,6 +228,16 @@ Expostas em `/metrics` via `prometheus_client`.
 - `401 Unauthorized` → usuário não autenticado.
 - `403 Forbidden` → usuário não é dono do produto.
 
+### Atualizar status de split
+
+`PATCH /api/v1/splits/{split_id}/status/`
+
+```json
+{
+  "status": "active"
+}
+```
+
 ### Criar produto
 
 `POST /api/v1/products/`
@@ -245,6 +256,10 @@ Expostas em `/metrics` via `prometheus_client`.
 ### Recuperar um produto por id
 
 `GET /api/v1/products/{product_id}/`
+
+### Lista todas as regras ativas de um produto
+
+`GET /api/v1/products/{product_id}/rules/`
 
 ---
 

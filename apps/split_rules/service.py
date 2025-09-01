@@ -62,6 +62,23 @@ class SplitSerivce:
             raise ValidationError(f"The total percentage of split rules must equal 100.")
         
         Rules.objects.bulk_create(rules_objects)
+        
+    @db_transaction.atomic
+    def update_split_status(self, user, split_id, new_status):
+        try:
+            split = Split.objects.get(id=split_id)
+        except Split.DoesNotExist:
+            raise ValueError("Split not found.")
+        
+        if split.product.owner != user:
+            raise PermissionDenied("You do not have permission to update this split.")
+        
+        if new_status == SplitStatus.ACTIVE and Split.objects.filter(product=split.product, status=SplitStatus.ACTIVE).exists():
+            raise ValueError("An active split already exists for this product.")
+        split.status = new_status
+        split.save()
+        return split
+
             
                 
                 

@@ -1,8 +1,9 @@
 from django.http import request
-from rest_framework.generics import RetrieveAPIView, ListCreateAPIView
+from rest_framework.generics import RetrieveAPIView, ListCreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import ProductResponseSerializer, ProductRequestSerializer
+from apps.split_rules.serializers import RulesResponseSerializer
 from .service import ProductService
 from drf_spectacular.utils import extend_schema
 
@@ -44,5 +45,16 @@ class RetrieveProductView(RetrieveAPIView):
     
         
         
+class GetActiveRules(ListAPIView):
+    serializer_class = RulesResponseSerializer
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.service = ProductService()
 
+        
+    def list(self, request, pk, *args, **kwargs):
+        rules = self.service.get_active_rules(pk)
+        response_data = self.get_serializer(rules, many=True).data
+        return Response(response_data, status=status.HTTP_200_OK)
     
