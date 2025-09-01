@@ -18,8 +18,8 @@ class ListCreateProductView(ListCreateAPIView):
     def get_queryset(self):
         return self.service.get_all_products(self.request.user)
     
-    @extend_schema(request=request_serializer, responses={201: ProductResponseSerializer})
-    def create(self, request, *args, **kwargs):
+    @extend_schema(request=ProductRequestSerializer, responses={201: ProductResponseSerializer})
+    def post(self, request, *args, **kwargs):
         try:
             serializer = self.request_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)

@@ -10,7 +10,7 @@ class PaymentProcessor:
         self.processor = processor
         
     def _verify_payment_split(self, product: Product):
-        feature_flag = Config.objects.filter(name="PaymentSplit", is_active=True, product=order.product)
+        feature_flag = Config.objects.filter(name="payment_splits", is_active=True, product=order.product)
         rules = Rules.objects.filter(split__product=order.product, split__status=SplitStatus.ACTIVE)
         
         if feature_flag.exists() and rules.exists():

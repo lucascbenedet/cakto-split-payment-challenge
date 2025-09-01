@@ -1,4 +1,5 @@
 from .models import Product
+from config.models import Config
 
 
 class ProductService:
@@ -13,4 +14,6 @@ class ProductService:
         return Product.objects.filter(owner=user)
     
     def create_product(self,request, validated_data):
-        return Product.objects.create(owner=request.user, **validated_data)
+        product = Product.objects.create(owner=request.user, **validated_data)
+        Config.objects.create(name="payment_splits", is_active=True, product=product)
+        return product

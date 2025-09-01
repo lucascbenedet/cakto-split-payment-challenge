@@ -1,7 +1,8 @@
 #!/bin/sh
+set -e
 
 echo "📌 Esperando o banco ficar pronto..."
-while ! nc -z $POSTGRES_HOST $POSTGRES_PORT; do
+while ! nc -z "$DATABASE_HOST" "$DATABASE_PORT"; do
   sleep 1
 done
 
