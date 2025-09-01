@@ -39,27 +39,5 @@
 - Precisão no cálculo dos splits.
   - Garantir que o somatório dos splits para aquele pedido corresponda ao valor total do pagamento.
   - Garantir que os splits são distribuídos de forma justa, ou seja, que o valor de cada split seja igual ou maior que zero.
-
-## Decisão 6 – Precisão financeira
-
-- Decimal (numeric) end-to-end, sem float.
-- Estratégia de arredondamento: largest remainder para distribuir centavos residuais de modo justo.
-- Somatórios e checks de integridade no DB.
-
-## Decisão 7 – Escalabilidade e concorrência
-
-- Postgres: índices adequados, partição por tempo em tabelas de operações (payment_split/item).
-- Redis: cache tático e controle de deduplicação/locks (com parcimônia).
-- Processamento assíncrono: Celery, filas por prioridade, prefetch baixo, `acks_late`, DLQ.
-
-## Decisão 8 – Segurança e compliance
-
-- Segregação de dados sensíveis; tokenização quando aplicável.
-- HMAC para webhooks; proteção a replay; audit log imutável.
-- Princípio do menor privilégio em credenciais e rotinas de rotação.
-
-## Trade-offs chave
-
-- Time-to-market vs pureza arquitetural: priorizamos módulo monolítico com bons boundaries.
-- Exactly-once vs at-least-once: adotamos at-least-once com idempotência, padrão de mercado em pagamentos.
-- Event sourcing: adiado; MVP com outbox e auditoria cobre necessidades.
+  - Garantir que os splits não sejam sobrescritos.
+  
