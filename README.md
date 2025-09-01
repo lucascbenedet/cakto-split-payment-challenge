@@ -26,7 +26,7 @@ Implementação de um módulo de **Split Payments** em Django REST Framework, at
 1. Clone o repositório:
 
    ```bash
-   git clone https://github.com/lucascbenedet/canto-split-payment-challenge.git
+   git clone https://github.com/lucascbenedet/cakto-split-payment-challenge.git
    cd cakto-split-payment-challenge
    ```
 
