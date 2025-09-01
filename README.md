@@ -90,6 +90,13 @@ Implementação de um módulo de **Split Payments** em Django REST Framework, at
 
    - O username e password do superuser criado estão no arquivo `.env` para local e `.env.docker` para docker. Por padrão o superuser é criado com o username `cakto` e senha `123`.
 
+4. Configurações:
+
+   - As configurações do projeto estão dentro da pasta `src/settings.py`.
+
+5. Banco de dados:
+   - O banco de dados está rodando dentro do container docker na porta `5432` e na porta `5434` para acessos externos.
+
 ## 🧪 Testes
 
 ### Unitários e Integração
